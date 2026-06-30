@@ -27,8 +27,20 @@ console.log('Detected HTML entry points for Build:', Object.keys(inputEntries).l
 
 export default defineConfig({
   build: {
+    // Inline assets smaller than 4KB as base64 to reduce HTTP requests
+    assetsInlineLimit: 4096,
+    // Enable CSS code splitting for better caching
+    cssCodeSplit: true,
+    // Minify JS and CSS with Vite 8 defaults (rolldown built-in)
+    cssMinify: true,
+    minify: true,
     rollupOptions: {
       input: inputEntries,
+      output: {
+        // Deterministic chunk names for long-term caching
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+      },
     },
   },
 });
